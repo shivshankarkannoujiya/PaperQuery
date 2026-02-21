@@ -1,5 +1,15 @@
-export const ingestPdf = (req, res) => {
-    res.status(200).json({
-        message: "Uploaded"
-    })
-}
+import { pdfQueue } from "../queues/pdf.queue.js";
+
+export const ingestPdf = async (req, res) => {
+  const fileUrl = `${req.protocol}://${req.get("host")}/static/pdfs/${req.file.filename}`;
+
+  await pdfQueue.add("process-pdf", {
+    filename: req.file.filename,
+    fileUrl,
+  });
+
+  res.status(200).json({
+    message: "Uploaded and queued for processing",
+    url: fileUrl,
+  });
+};
