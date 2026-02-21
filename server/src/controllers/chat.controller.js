@@ -4,7 +4,7 @@ export const chatWithDocument = async (req, res) => {
     try {
         const { question } = req.body;
 
-        if (!message) {
+        if (!question) {
           return res.status(400).json({ error: "Message is required" });
         }
 
