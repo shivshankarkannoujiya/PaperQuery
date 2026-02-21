@@ -3,7 +3,7 @@ const Upload = ({ size = 24, color = "currentColor", ...props }) => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
-      height={(size * 386.883) / 512} // Maintains aspect ratio based on viewBox
+      height={(size * 386.883) / 512} 
       viewBox="0 0 512 386.883"
       fill={color}
       shapeRendering="geometricPrecision"
