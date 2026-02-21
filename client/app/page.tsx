@@ -3,7 +3,7 @@ import FileUploadComponent from "./components/File-upload";
 export default function Home() {
   return (
     <div>
-      <div className="border border-red-600 min-h-screen w-screen flex ">
+      <div className="min-h-screen w-screen flex ">
         <div className="w-[30vw] min-h-screen p-4 flex justify-center items-center">
           <FileUploadComponent/>
         </div>
