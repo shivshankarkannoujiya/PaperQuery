@@ -4,7 +4,6 @@ import { Worker } from "bullmq";
 import valkey from "../config/valkey.config.js";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { QdrantVectorStore } from "@langchain/qdrant";
-import { Document } from "@langchain/core/documents";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { ENV } from "../config/env.js";
@@ -62,9 +61,6 @@ const pdfWorker = new Worker(
       },
     );
     console.log("STORED SUCCESSFULLY");
-
-
-    // Retrive from same vectorStore
   },
 
   {

@@ -15,6 +15,8 @@ app.use(cors());
 app.use("/static", express.static(path.join(__dirname, "../public")));
 
 import ingestionRouter from "./routes/ingesion.routes.js";
+import chatRouter from "./routes/chat.routes.js"
 app.use("/api/v1/ingest", ingestionRouter);
+app.use("/api/v1/chat", chatRouter);
 
 export default app;
