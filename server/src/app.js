@@ -15,6 +15,6 @@ app.use(cors());
 app.use("/static", express.static(path.join(__dirname, "public")));
 
 import ingestionRouter from "./routes/ingesion.routes.js";
-app.use("/api/v1/upload", ingestionRouter);
+app.use("/api/v1/ingest", ingestionRouter);
 
 export default app;
