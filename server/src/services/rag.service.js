@@ -24,7 +24,7 @@ const getVectorStore = async () => {
   return vectorStore;
 };
 
-export const askToRag = async (question) => {
+export async function* askToRagStream(question) {
   const store = await getVectorStore();
 
   const retriever = store.asRetriever({ k: 4 });
@@ -41,16 +41,19 @@ Context:
 ${context}
   `.trim();
 
-  const result = await AI.chat.completions.create({
+  const stream = await AI.chat.completions.create({
     model: "gpt-4o-mini",
+    stream: true,
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
       { role: "user", content: question },
     ],
   });
 
-  return {
-    message: result.choices[0].message.content,
-    docs: relevantDocs, 
-  };
-};
+  for await (const chunk of stream) {
+    const token = chunk.choices[0]?.delta?.content;
+    if (token) yield { token };
+  }
+
+  yield { done: true, docs: relevantDocs };
+}
