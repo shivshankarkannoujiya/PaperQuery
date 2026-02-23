@@ -158,7 +158,7 @@ export default function ChatComponent() {
         for (const line of lines) {
           if (!line.startsWith("data: ")) continue;
           try {
-            const event = JSON.parse(line.slice(6)); 
+            const event = JSON.parse(line.slice(6));
             if (event.token) {
               setMessages((prev) =>
                 prev.map((m) =>
@@ -212,58 +212,59 @@ export default function ChatComponent() {
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6 scrollbar-thin scrollbar-thumb-[#2a2a2a]">
-        {messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`flex gap-4 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}
-          >
-            {/* Avatar */}
+        {messages.map((msg) =>
+          msg.role === "assistant" && msg.content === "" ? null : (
             <div
-              className={`w-8 h-8 rounded-full shrink-0 flex items-center justify-center text-xs font-bold mt-0.5
+              key={msg.id}
+              className={`flex gap-4 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}
+            >
+              {/* Avatar */}
+              <div
+                className={`w-8 h-8 rounded-full shrink-0 flex items-center justify-center text-xs font-bold mt-0.5
                 ${
                   msg.role === "assistant"
                     ? "bg-[#c9a96e] text-[#0f0f0f]"
                     : "bg-[#2a2a2a] text-[#c9a96e] border border-[#3a3a3a]"
                 }`}
-            >
-              {msg.role === "assistant" ? "AI" : "U"}
-            </div>
+              >
+                {msg.role === "assistant" ? "AI" : "U"}
+              </div>
 
-            {/* Bubble */}
-            <div
-              className={`max-w-[75%] space-y-1 ${msg.role === "user" ? "items-end" : "items-start"} flex flex-col`}
-            >
+              {/* Bubble */}
               <div
-                className={`px-4 py-3 rounded-2xl text-sm leading-relaxed
+                className={`max-w-[75%] space-y-1 ${msg.role === "user" ? "items-end" : "items-start"} flex flex-col`}
+              >
+                <div
+                  className={`px-4 py-3 rounded-2xl text-sm leading-relaxed
                   ${
                     msg.role === "assistant"
                       ? "bg-[#1a1a1a] border border-[#2a2a2a] text-[#e8e4dc] rounded-tl-sm"
                       : "bg-[#c9a96e] text-[#0f0f0f] rounded-tr-sm"
                   }`}
-              >
-                {msg.role === "assistant" ? (
-                  <ReactMarkdown components={markdownComponents}>
-                    {
-                      msg.content ||
-                        "​" 
-                    }
-                  </ReactMarkdown>
-                ) : (
-                  msg.content
-                )}
+                >
+                  {msg.role === "assistant" ? (
+                    <ReactMarkdown components={markdownComponents}>
+                      {
+                        msg.content ||
+                          "​" 
+                      }
+                    </ReactMarkdown>
+                  ) : (
+                    msg.content
+                  )}
+                </div>
+                <span
+                  className="text-[10px] text-[#444] px-1"
+                  suppressHydrationWarning
+                >
+                  {formatTime(msg.timestamp)}
+                </span>
               </div>
-              <span
-                className="text-[10px] text-[#444] px-1"
-                suppressHydrationWarning
-              >
-                {formatTime(msg.timestamp)}
-              </span>
             </div>
-          </div>
-        ))}
+          ),
+        )}
 
-        {/* Loading indicator */}
-        {isLoading && (
+        {isLoading && messages[messages.length - 1]?.content === "" && (
           <div className="flex gap-4">
             <div className="w-8 h-8 rounded-full bg-[#c9a96e] shrink-0 flex items-center justify-center text-xs font-bold text-[#0f0f0f]">
               AI
